@@ -12,6 +12,7 @@
  * GLOBAL STYLES
  *********************************************/
 body {
+  -webkit-text-stroke: 0.25px;
   background: #add9e4;
   background: -moz-radial-gradient(center, circle cover, #f7fbfc 0%, #add9e4 100%);
   background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, #f7fbfc), color-stop(100%, #add9e4));
