@@ -78,7 +78,6 @@
                             final PrintStream pStream = ...;
                             btn.addActionListener(e -> pStream.println("Button Clicked!"));
                             ```
-                            
                             ```
                             new Thread(() -> {
                                 connectToService();
@@ -105,6 +104,8 @@
                             public interface Runnable {
                                 public abstract void run();
                             }
+
+                            Runnable r = () -> System.out.println("Hello World!");
                             ```
                         </script>
                     </section>
@@ -117,6 +118,44 @@
                             - Supplier&lt;T&gt; - provide an instance of a T (such as a factory)
                             - UnaryOperator&lt;T&gt; - a function from T to T
                             - BinaryOperator&lt;T&gt; - a function from (T, T) to T
+                        </script>
+                    </section>
+                </section>
+                <section>
+                    <section id="methodReferences" data-markdown>
+                        <script type="text/template">
+                            ## Method References
+                            > Treating an existing method as an instance of a Functional Interface
+                        </script>
+                    </section>
+                    <section id="methodReferencesExample" data-markdown>
+                        <script type="text/template">
+                            ## Method References
+                            ### Examples
+                            ```
+                            class Person {
+                                private String _name;
+                                private int _age;
+
+                                public int getAge() { return _age; }
+                                public String getName() { return _name; }
+                            }
+
+                            Person[] people = ...;
+                            Comparator<Person> = Comparator.comparing(Person::getName);
+                            ```
+                        </script>
+                    </section>
+                    <section id="methodReferencesMoreExamples" data-markdown>
+                        <script type="text/template">
+                            ## Method References
+                            ### More Examples
+                            ```
+                            Consumer<Integer> b1 = System::exit;
+                            Consumer<String[]> b2 = Arrays::sort;
+                            Consumer<String> b3 = MyProgram::main;
+                            Runnable r = MyProgram::main;
+                            ```
                         </script>
                     </section>
                 </section>
