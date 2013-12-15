@@ -60,12 +60,12 @@
                             ## java.util.stream
                             > filter/map/reduce for Java
 
-                            ```java
-                            List persons = …;
-                            // sequential version
-                            Stream stream = persons.stream();
+                            ```
+                            ArrayList<Student> students = …;
+                            Stream stream = students.stream(); // sequential version
+
                             // parallel version
-                            Stream parallelStream = persons.parallelStream();
+                            Stream parallelStream = students.parallelStream();
                             ```
 
                             - traversed once
@@ -76,19 +76,46 @@
                     <section id="streamsources" data-markdown>
                         <script type="text/template">
                             ## java.util.stream
-                            > filter/map/reduce for Java
+                            ### Stream sources
 
-                            ```java
-                            List persons = …;
-                            // sequential version
-                            Stream stream = persons.stream();
-                            // parallel version
-                            Stream parallelStream = persons.parallelStream();
+                            #### collections
+                            ```
+                            LinkedHashSet set;
+                            Stream stream = set.stream();
                             ```
 
-                            - traversed once
-                            - infinite
-                            - lazy
+                            #### generators
+                            ```
+                            Random random = new Random();
+                            Stream randomNumbers = Stream.generate(random::nextInt);
+                            ```
+
+                            #### from other streams
+                            ```
+                            Stream newStream = Stream.concat(stream, randomNumbers);
+                            ```
+                        </script>
+                    </section>
+                    <section id="intermediateoperations" data-markdown>
+                        <script type="text/template">
+                            ## java.util.stream
+                            ### Intermediate operations
+
+                            - `.filter`    - excludes all elements that don’t match a `Predicate`
+                            - `.map`       - perform transformation of elements using a `Function`
+                            - `.flatMap`   - transform each element into zero or more elements by way of another `Stream`  
+                            - `.peek`      - performs some action on each element  
+                            - `.distinct`  - excludes all duplicate elements (`equals()`)  
+                            - `.sorted`    - orderered elements (`Comparator`)  
+                            - `.limit`     - maximum number of elements  
+                            - `.substream` - range (by index) of elements  
+
+                            ```java
+                            List persons = ...;
+                            Stream tenPersonsOver18 = persons.stream()
+                           .filter(p -> p.getAge() > 18)
+                           .limit(10);
+                            ```
                         </script>
                     </section>
                 </section>
