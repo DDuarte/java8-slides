@@ -219,7 +219,7 @@
 					</section>
 					<section id="purpose2" data-markdown>
 						<script type="text/template">
-							###There's a problem
+							###<font color='red'>There's a problem</font> 
 							
 							The `forEach` isn’t declared by **java.util.list** nor the **java.util.collection** 
 							interface yet.
@@ -313,10 +313,100 @@
 							}
 
 						}
-
+						```
+						```
 						public class Clazz implements A, B {
 						}
 						```
+						
+						
+						Does this code compile?
+						</script>
+					</section>
+					<section id="example2-2" data-markdown>
+						<script type="text/template">
+						
+						```
+						java: class Clazz inherits unrelated defaults for foo() from 
+						types A and B
+						```
+						Of course not!
+						
+						How do we fix it?
+						</script>
+					</section>
+					<section id="example2-3" data-markdown>
+						<script type="text/template">
+							Option A:
+							```
+							public class Clazz implements A, B {
+								public void foo(){}
+							}
+							```
+							We resolve it manually by overriding the conflicting method.
+							
+							Option B:
+							
+							```
+							public class Clazz implements A, B {
+								public void foo(){
+									A.super.foo(); // or B.super.foo()
+								}
+							}
+							```
+							
+							We call the **default** implementation of method `foo()` from either interface **A** or **B** instead of implementing our own.
+						</script>
+					</section>
+					<section id="finalExample1-1" data-markdown>
+						<script type="text/template">
+							Going back to the example of `forEach` method, how can we force it`s default implementation all the iterable collections?
+						</script>
+					</section>
+					<section id="finalExample1-2" data-markdown>
+						<script type="text/template">
+							Let`s take a look at the Java **UML** for all the iterable **Collections**:
+							<img src="Collection_interfaces.gif"></img>
+							
+							In order to add a default behaviour to all the iterable collections, a **default** `forEach` method was added to the `Iterable<E>` **interface**.
+						</script>
+					</section>
+					<section id="finalExample1-3" data-markdown>
+						<script type="text/template">
+							We can find its default implementation in **java.lang.iterable** interface:
+							
+							```
+							@FunctionalInterface
+							public interface Iterable {
+								Iterator iterator();
+								default void forEach(Consumer<? super T> action) {
+									Objects.requireNonNull(action);
+									for (T t : this) {
+										action.accept(t);
+									}
+								}
+							}
+							```
+						</script>
+					</section>
+					<section id="finalExample1-4" data-markdown>
+						<script type="text/template">
+							The forEach method takes **java.util.function.Consumer** functional interface type as a parameter which enables us to pass in a lambda or a method reference as follows:
+							
+							```
+							List<?> list = ...
+							list.forEach(System.out::println);
+							```
+							
+							However, this is also valid for object of class `Set<E>` or `Queue<E>` for example, since both classes implement the `Iterable` interface.
+						</script>
+					</section>
+					<section id="finalExample1-5" data-markdown>
+						<script type="text/template">
+							##Summary
+							Default methods can be seen as a bridge between lambdas and JDK libraries. However, the scope of this feature 
+							surpasses the retrocompatibility domain: they can also help
+							reduce the amount of redudant code when dealing with interfaces like **Swing**.
 						</script>
 					</section>
                 </section>
