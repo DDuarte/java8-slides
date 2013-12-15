@@ -516,6 +516,85 @@
                         </script>
                     </section>
                 </section>
+
+                <section>
+                    <section id="java_time" data-markdown>
+                        <script type="text/template">
+                            ## java.time
+                            > A New Java Date/Time API
+                        </script>
+                    </section>
+
+                    <section id="java_time_clock" data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## java.time
+                            ### Current Time
+                            ```
+                            Clock clockUTC = Clock.systemUTC();
+                            ```
+                            ```
+                            Clock clockDefault = Clock.systemDefaultZone();
+                            ```
+                            Notes:
+                            - Different Time Zones
+                        </script>
+                    </section>
+
+                    <section id="java_time_zones" data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## java.time
+                            ### Time Zones
+                            ```
+                            ZoneId zone = ZoneId.systemDefault();
+                            ```
+                            ```
+                            ZoneId zoneBerlin = ZoneId.of("Europe/Berlin");
+                            Clock clock = Clock.system(zoneBerlin);
+                            ```
+                            Notes:
+                            - Constructing a Clock using a ZoneId
+                        </script>
+                    </section>
+
+                    <section id="java_time_local" data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## java.time
+                            ### Human Readable Time
+                            ```
+                            class LocalDate {
+                                public static LocalDate now() { ... }
+                                public static LocalDate now(ZoneId zone) { ... }
+                                public static LocalDate now(Clock clock) { ... }
+                            }
+
+                            ```
+                            ```
+                            LocalDate date = LocalDate.now();
+                            System.out.printf("%s-%s-%s",
+                                date.getYear(), date.getMonthValue(), date.getDayOfMonth());
+                            ```
+                            Notes:
+                            - now() accepts a Clock or a ZoneId
+                        </script>
+                    </section>
+
+                    <section id="java_time_local" data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## java.time
+                            ### Doing Calculations
+                            ```
+                            LocalTime lt = LocalTime.now();
+                            lt.plus(5, ChronoUnit.HOURS);
+
+                            lt.plusHours(5);
+
+                            Duration dur = Duration.of(5, ChronoUnit.HOURS);
+                            lt.plus(dur);
+                            ```
+                        </script>
+                    </section>
+                </section>
+
                 <section id="docs" data-markdown>
                     <script type="text/template">
                         ## Documentation
@@ -524,6 +603,8 @@
                         http://download.java.net/jdk8/docs/api/
                     </script>
                 </section>
+
+
                 <section data-markdown>
                     <script type="text/template">
                         # THE END
