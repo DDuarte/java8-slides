@@ -43,15 +43,56 @@
                         - **Java SE 8** (March, 2014) [*scheduled*]
                     </script>
                 </section>
-                <section id="lambda" data-markdown>
-                    <script type="text/template">
-                        ## Lambdas
-                    </script>
+                <section>
+                    <section id="lambda" data-markdown>
+                        <script type="text/template">
+                            ## Lambdas
+                            > Anonymous methods aimed at reducing the verbosity of anonymous classes.
+                        </script>
+                    </section>
+                    <section id="lambdasource" data-markdown>
+                        <script type="text/template">
+                            ## Lambdas
+                            
+                            ``` 
+                            (int x, int y) -> x + y 
+                            
+                            () -> 42
+                            
+                            (String s) -> { System.out.println(s); }
+                            ```
+                        </script>
+                    </section>
+                    <section id="lambdausage" data-markdown>
+                        <script type="text/template">
+                            ## Lambdas
+                            
+                            ### Usage
+                            ```
+                            ArrayList<String> strs = ...;
+                            Collections.sort(strs, (s1, s2) -> s2.length() - s1.length());
+                            
+                            ```
+                            ```
+                            JButton btn = new JButton();
+                            final PrintStream pStream = ...;
+                            btn.addActionListener(e -> pStream.println("Button Clicked!"));
+                            ```
+                            
+                            ```
+                            new Thread(() -> {
+                                connectToService();
+                                sendNotification();
+                            }).start();
+                            ```
+                        </script>
+                    </section>
                 </section>
                 <section id="functionaltemplate" data-markdown>
                     <script type="text/template">
                         ## Functional Interfaces
                         > Purpose: enable interfaces to evolve without introducing incompatibility with existing implementations.
+                        
                     </script>
                 </section>
                 <section>
