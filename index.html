@@ -161,89 +161,127 @@
                     </section>
                 </section>
                 <section>
-                <section id="defaultMethods" data-markdown>
-                    <script type="text/template">
-                        ## Default Methods
-                        ###the *what*, *why* and *how*
-                    </script>
-                </section>
-                <section id="purpose" data-markdown>
-                    <script type="text/template">
-						##Why default methods?
-						
-						Suppose Java 8 is out and has lambdas. We want to start using 
-them:
-
-						```
-						List<?> list = ...
-						list.forEach(...); // lambda code goes here
-						```    
-                    </script>
+					<section id="defaultMethods" data-markdown>
+						<script type="text/template">
+							## Default Methods
+						</script>
+					</section>
+					<section id="purpose" data-markdown>
+						<script type="text/template">
+							##Why default methods?
+							
+							Suppose Java 8 is out and has lambdas. We want to start using 
+							them:
+	
+							```
+							List<?> list = ...
+							list.forEach(...); // lambda code goes here
+							```
+							
+						</script>
 					</section>
 					<section id="purpose2" data-markdown>
-                    <script type="text/template">			
-						###<font color='red'>There's a problem</font>
-						The `forEach` isn’t declared by **java.util.list** nor the **java.util.collection**
-						interface yet.
-
-						Adding extra methods to the **java.util.collection** interfaces would break the existing implementations.
-					</script>
-					</section>
-                    <section id="purpose3" data-markdown>
-                    <script type="text/template">
-					## Default Methods
-					
-					We have lambdas, but we can`t force **new** behaviours into the current libraries.
-					
-					Solution: **default** methods.
-					
-                    </script>
-                    </section>
-					<section id="purpose3" data-markdown>
-                    <script type="text/template">
-					## Default Methods
-					
-					Default methods or **defender 
-methods**, can now be added to interfaces providing a default 
-implementation of the declared behavior.
-					
-                    </script>
-                    </section>
-					<section id="purpose4" data-markdown>
-                    <script type="text/template">
-					## Default Methods
-					
-					```
-					public interface A {
+						<script type="text/template">
+							###There's a problem
+							
+							The `forEach` isn’t declared by **java.util.list** nor the **java.util.collection** 
+							interface yet.
 	
-						default void foo() {
-							System.out.println("Calling A.foo()");
+							Adding extra methods to the **java.util.collection** interfaces would break the 
+							existing implementations.
+						</script>
+					</section>
+					<section id="purpose3" data-markdown>
+						<script type="text/template">
+						## Default Methods
+						
+						We have lambdas, but we can`t force **new** behaviours into the current libraries.
+						
+						Solution: **default** methods.
+						
+						</script>
+					</section>
+					<section id="purpose4" data-markdown>
+						<script type="text/template">
+						## Default Methods
+						
+						Default methods or **defender 
+						methods**, can now be added to interfaces providing a default 
+						implementation of the declared behavior.
+						
+						</script>
+					</section>
+					<section id="examples" data-markdown>
+						<script type="text/template">
+						## Examples
+						</script>
+					</section>
+					<section id="examples" data-markdown>
+						<script type="text/template">
+						## Example 1
+						###Basics
+						</script>
+					</section>
+					<section id="example1-1" data-markdown>
+						<script type="text/template">
+						```
+						public interface A {
+		
+							default void foo() {
+								System.out.println("Calling A.foo()");
+							}
 						}
-					}
+	
+						public class Clazz implements A {
+						}
+						```
+						</script>
+					</section>
+					<section id="example1-2" data-markdown>
+						<script type="text/template">
+						####Client code
+						```
+						Clazz clazz = new Clazz();
+						clazz.foo();
+						
+						```
+						
+						####Output
+						```
+						"Calling A.foo()"
+						```
+						
+						</script>
+					</section>
+					<section id="examples2" data-markdown>
+						<script type="text/template">
+						## Example 2
+						###Getting messy
+						</script>
+					</section>
+					<section id="example2-1" data-markdown>
+						<script type="text/template">
+						```
+						public interface A {
+	
+							default void foo(){
+								System.out.println("Calling A.foo()");
+							}
+						}
 
-					public class Clazz implements A {
-					}
-					```
-                    </script>
-                    </section>
-					<section id="purpose5" data-markdown>
-                    <script type="text/template">
-					##Default methods
-					
-					####Client code
-					```
-					Clazz clazz = new Clazz();
-					clazz.foo(); // Calling A.foo()
-					
-					```
-					
-					####Output
-					```
-					"Calling A.foo()"
-					```
-					
-                    </script>
-                    </section>
+						public interface B {
+	
+							default void foo(){
+								System.out.println("Calling B.foo()");
+							}
+
+						}
+
+						public class Clazz implements A, B {
+						}
+						```
+						</script>
+					</section>
                 </section>
                 <section>
                     <section id="stream" data-markdown>
