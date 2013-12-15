@@ -96,6 +96,56 @@
                     </script>
                 </section>
                 <section>
+                <section id="defaultMethods" data-markdown>
+                    <script type="text/template">
+                        ## Default Methods
+                        ###the *what*, *why* and *how*
+                    </script>
+                </section>
+                <section id="purpose" data-markdown>
+                    <script type="text/template">
+						##Why default methods?
+						
+						Suppose Java 8 is out and has lambdas. We want to start using 
+them:
+
+						```
+						List<?> list = ...
+						list.forEach(...); // lambda code goes here
+						```    
+                    </script>
+					</section>
+					<section id="purpose2" data-markdown>
+                    <script type="text/template">			
+						###<font color='red'>There's a problem</font>
+						The **forEach** isn’t declared by **java.util.list** nor the **java.util.collection**
+						interface yet.
+
+						Adding extra methods to the **java.util.collection** interfaces would break the exisiting implementations.
+					</script>
+					</section>
+                    <section id="purpose3" data-markdown>
+                    <script type="text/template">
+					## Default Methods
+					
+					We have lambdas, but we can`t force **new** behaviours into the current libraries.
+					
+					Solution: **default** methods.
+					
+                    </script>
+                    </section>
+					<section id="purpose3" data-markdown>
+                    <script type="text/template">
+					## Default Methods
+					
+					Default methods or **defender 
+methods**, can now be added to interfaces providing a default 
+implementation of the declared behavior.
+					
+                    </script>
+                    </section>
+                </section>
+                <section>
                     <section id="stream" data-markdown>
                         <script type="text/template">
                             ## java.util.stream
