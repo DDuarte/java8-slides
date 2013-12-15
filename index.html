@@ -221,7 +221,7 @@
 						<script type="text/template">
 							###<font color='red'>There's a problem</font> 
 							
-							The `forEach` isn’t declared by **java.util.list** nor the **java.util.collection** 
+							The `forEach` method isn’t declared by **java.util.list** nor the **java.util.collection** 
 							interface yet.
 	
 							Adding extra methods to the **java.util.collection** interfaces would break the 
@@ -410,6 +410,102 @@
 						</script>
 					</section>
                 </section>
+				<section>
+					<section id="concurrency" data-markdown> 
+                        <script type="text/template">
+                        ##Concurrency Updates
+                        </script>
+                    </section>
+					<section id="concurrency2" data-markdown>
+                        <script type="text/template">
+						##Concurrency Updates
+						The continual evolution of uses of concurrency and parallelism in applications requires continual evolution in library support.
+						
+						Several classes and facilities were added to the **java.util.concurrent** package, mainly:
+						
+						- Accumulators;
+						- Added methods to the **ConcurrentHashMap** class.
+						
+                        </script>
+                    </section>
+					<section id="concurrency3" data-markdown>
+                        <script type="text/template">
+						##Accumulators
+						Scalable updatable variables. Maintaining a single count, sum, etc., that is updated by possibly many threads is a common scalability problem.
+						
+						A set of new classes were created for that purpose:
+						
+						- DoubleAccumulator
+						- DoubleAdder
+						- LongAccumulator
+						- LongAdder
+
+                        </script>
+                    </section>
+					<section id="concurrency4" data-markdown>
+                        <script type="text/template">
+						##Accumulators
+						Package **java.util.concurrent** mechanisms synchronized operations between threads, however if all you want to do 
+						is increment a variable across threads, it was overkill and then some.
+						
+						These classes are usually preferable to alternatives when multiple threads update a common value that is used for purposes such as summary statistics 
+						that are frequently updated but less frequently read.
+                        </script>
+                    </section>
+					<section id="concurrency5" data-markdown>
+                        <script type="text/template">
+						##Accumulators
+						Both the **DoubleAdder** and **LongAdder** classes can be seen as specific subsets of the **DoubleAccumulator** and **LongAccumulator** functionality.
+						
+						The call new `DoubleAdder()` is equivalent to 
+						
+						new `DoubleAccumulator((x, y) -> x + y, 0.0)`.
+						
+						The call new `LongAdder()` is equivalent to 
+						
+						new `LongAccumulator((x, y) -> x + y, 0L)`.
+						</script>
+                    </section>
+					<section id="concurrency5" data-markdown>
+						##Examples
+                    </section>
+					<section id="concurrency5" data-markdown>
+                        <script type="text/template">
+							```
+							DoubleAccumulator da = new DoubleAccumulator((x,y) -> x + y, 0.0);
+							List<Double> doubles = Arrays.asList(1.0, 2.0, 3.0, 4.0, 10.0);
+							doubles.forEach(da::accumulate);
+
+							System.out.println("Result: " + da.doubleValue());
+							
+							```
+							
+							Output:
+							```
+							Result: 24
+							```
+							
+						</script>
+                    </section>
+					<section id="concurrency5" data-markdown>
+                        <script type="text/template">
+							```
+							LongAdder la = new LongAdder();
+							List<long> longs = Arrays.asList(10, 20, 30, 40, 100);
+							longs.forEach(la::accumulate);
+
+							System.out.println("Result: " + la.longValue());
+							
+							```
+							
+							Output:
+							```
+							Result: 200
+							```
+							
+						</script>
+                    </section>
+				</section>
                 <section>
                     <section id="stream" data-markdown>
                         <script type="text/template">
