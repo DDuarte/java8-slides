@@ -143,10 +143,10 @@ them:
 					<section id="purpose2" data-markdown>
                     <script type="text/template">			
 						###<font color='red'>There's a problem</font>
-						The **forEach** isn’t declared by **java.util.list** nor the **java.util.collection**
+						The `forEach` isn’t declared by **java.util.list** nor the **java.util.collection**
 						interface yet.
 
-						Adding extra methods to the **java.util.collection** interfaces would break the exisiting implementations.
+						Adding extra methods to the **java.util.collection** interfaces would break the existing implementations.
 					</script>
 					</section>
                     <section id="purpose3" data-markdown>
@@ -166,6 +166,41 @@ them:
 					Default methods or **defender 
 methods**, can now be added to interfaces providing a default 
 implementation of the declared behavior.
+					
+                    </script>
+                    </section>
+					<section id="purpose4" data-markdown>
+                    <script type="text/template">
+					## Default Methods
+					
+					```
+					public interface A {
+	
+						default void foo() {
+							System.out.println("Calling A.foo()");
+						}
+					}
+
+					public class Clazz implements A {
+					}
+					```
+                    </script>
+                    </section>
+					<section id="purpose5" data-markdown>
+                    <script type="text/template">
+					##Default methods
+					
+					####Client code
+					```
+					Clazz clazz = new Clazz();
+					clazz.foo(); // Calling A.foo()
+					
+					```
+					
+					####Output
+					```
+					"Calling A.foo()"
+					```
 					
                     </script>
                     </section>
