@@ -151,11 +151,52 @@
                             - `.limit`     - maximum number of elements  
                             - `.substream` - range (by index) of elements  
 
-                            ```java
+                            ```
                             List persons = ...;
                             Stream tenPersonsOver18 = persons.stream()
                            .filter(p -> p.getAge() > 18)
                            .limit(10);
+                            ```
+                        </script>
+                    </section>
+                    <section id="terminatingoperations" data-markdown>
+                        <script type="text/template">
+                            ## java.util.stream
+                            ### Terminating operations
+
+                            1. Obtain a stream from some sources
+                            2. Perform one or more intermidate operations
+                            3. Perform one terminal operation
+
+                            ---
+
+                            - reducers like `reduce()`, `count()`, `findAny()`, `findFirst()`
+                            - collectors (`collect()`)
+                            - `forEach`
+                            - iterators
+
+                            ```
+                            List<Person> persons = ..;
+                            List<Student> students = persons.stream()
+                           .filter(p -> p.getAge() > 18)
+                           .map(Student::new)
+                           .collect(Collectors.toList());
+                            ```
+                        </script>
+                    </section>
+                    <section id="parallelsequential" data-markdown>
+                        <script type="text/template">
+                            ## java.util.stream
+                            ### Parallel & sequential
+
+                            ```
+                            List<Person> persons = ..;
+                            List<Student> students = persons.stream()
+         .parallel()
+         .filter(p -> p.getAge() > 18)
+         .sequential()
+         .map(Student::new)
+         .collect(Collectors.toCollection(ArrayList::new));
                             ```
                         </script>
                     </section>
