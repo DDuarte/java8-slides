@@ -47,7 +47,7 @@
                     <section id="lambda" data-markdown>
                         <script type="text/template">
                             ## Lambdas
-                            > Anonymous methods aimed at reducing the verbosity of anonymous classes.
+                            > Anonymous methods aimed at reducing the verbosity caused by anonymous classes.
                         </script>
                     </section>
                     <section id="lambdasource" data-markdown>
@@ -67,7 +67,7 @@
                         <script type="text/template">
                             ## Lambdas
                             
-                            ### Usage
+                            ### Examples
                             ```
                             ArrayList<String> strs = ...;
                             Collections.sort(strs, (s1, s2) -> s2.length() - s1.length());
@@ -88,12 +88,37 @@
                         </script>
                     </section>
                 </section>
-                <section id="functionaltemplate" data-markdown>
-                    <script type="text/template">
-                        ## Functional Interfaces
-                        > Purpose: enable interfaces to evolve without introducing incompatibility with existing implementations.
-                        
-                    </script>
+                <section>
+                    <section id="functionaltemplate" data-markdown>
+                        <script type="text/template">
+                            ## Functional Interfaces
+                            > Single Abstract Method Type
+
+                        </script>
+                    </section>
+                    <section id="functionaltemplate" data-markdown>
+                        <script type="text/template">
+                            ## Functional Interfaces
+                            ### Example
+                            ```
+                            @FunctionalInterface
+                            public interface Runnable {
+                                public abstract void run();
+                            }
+                            ```
+                        </script>
+                    </section>
+                    <section id="functionaltemplate" data-markdown>
+                        <script type="text/template">
+                            ## java.util.function
+                            - Predicate&lt;T&gt; - a boolean-valued property of an object
+                            - Consumer&lt;T&gt; - an action to be performed on an object
+                            - Function&lt;T, R&gt; - a function transforming a T to a R
+                            - Supplier&lt;T&gt; - provide an instance of a T (such as a factory)
+                            - UnaryOperator&lt;T&gt; - a function from T to T
+                            - BinaryOperator&lt;T&gt; - a function from (T, T) to T
+                        </script>
+                    </section>
                 </section>
                 <section>
                 <section id="defaultMethods" data-markdown>
@@ -280,7 +305,7 @@ implementation of the declared behavior.
                     { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
                     { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
                     { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
                     // { src: 'plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
                 ]
             });
