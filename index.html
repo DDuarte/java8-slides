@@ -142,7 +142,8 @@
                             }
 
                             Person[] people = ...;
-                            Comparator<Person> = Comparator.comparing(Person::getName);
+                            Comparator<Person> byName = Comparator.comparing(Person::getName);
+                            Arrays.sort(people, byName);
                             ```
                         </script>
                     </section>
