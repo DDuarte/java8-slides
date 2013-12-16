@@ -201,6 +201,8 @@
 					<section id="defaultMethods" data-markdown>
 						<script type="text/template">
 							## Default Methods
+							
+							> Add default behaviours to interfaces
 						</script>
 					</section>
 					<section id="purpose" data-markdown>
@@ -241,7 +243,6 @@
 					<section id="purpose4" data-markdown>
 						<script type="text/template">
 						## Default Methods
-						
 						Default methods or **defender 
 						methods**, can now be added to interfaces providing a default 
 						implementation of the declared behavior.
@@ -411,27 +412,25 @@
 					</section>
                 </section>
 				<section>
-					<section id="concurrency" data-markdown> 
+					<section id="concurrency" data-markdown>
                         <script type="text/template">
-                        ##Concurrency Updates
+                        ##Accumulators
+						
+						Scalable updatable variables
                         </script>
                     </section>
 					<section id="concurrency2" data-markdown>
                         <script type="text/template">
-						##Concurrency Updates
+						##Accumulators
 						The continual evolution of uses of concurrency and parallelism in applications requires continual evolution in library support.
-						
-						Several classes and facilities were added to the **java.util.concurrent** package, mainly:
-						
-						- Accumulators;
-						- Added methods to the **ConcurrentHashMap** class.
+						For this purpose, the **Accumulators** were introduced.
 						
                         </script>
                     </section>
 					<section id="concurrency3" data-markdown>
                         <script type="text/template">
 						##Accumulators
-						Scalable updatable variables. Maintaining a single count, sum, etc., that is updated by possibly many threads is a common scalability problem.
+						Maintaining a single count, sum, etc., that is updated by possibly many threads is a common scalability problem.
 						
 						A set of new classes were created for that purpose:
 						
