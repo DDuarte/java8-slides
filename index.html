@@ -57,12 +57,12 @@
                     <section id="lambdasource" data-markdown data-notes="^Notes:">
                         <script type="text/template">
                             ## Lambdas
-                            
-                            ``` 
-                            (int x, int y) -> x + y 
-                            
+
+                            ```
+                            (int x, int y) -> x + y
+
                             () -> 42
-                            
+
                             (String s) -> { System.out.println(s); }
                             ```
                             Notes:
@@ -73,12 +73,12 @@
                     <section id="lambdausage" data-markdown data-notes="^Notes:">
                         <script type="text/template">
                             ## Lambdas
-                            
+
                             ### Examples
                             ```
                             ArrayList<String> strs = ...;
                             Collections.sort(strs, (s1, s2) -> s2.length() - s1.length());
-                            
+
                             ```
                             ```
                             JButton btn = new JButton();
@@ -198,314 +198,313 @@
                     </section>
                 </section>
                 <section>
-					<section id="defaultMethods" data-markdown>
-						<script type="text/template">
-							## Default Methods
-							
-							> Add default behaviours to interfaces
-						</script>
-					</section>
-					<section id="purpose" data-markdown>
-						<script type="text/template">
-							##Why default methods?
-							
-							Suppose Java 8 is out and has lambdas. We want to start using 
-							them:
-	
-							```
-							List<?> list = ...
-							list.forEach(...); // lambda code goes here
-							```
-							
-						</script>
-					</section>
-					<section id="purpose2" data-markdown>
-						<script type="text/template">
-							###<font color='red'>There's a problem</font> 
-							
-							The `forEach` method isn’t declared by **java.util.list** nor the **java.util.collection** 
-							interface yet.
-	
-							Adding extra methods to the **java.util.collection** interfaces would break the 
-							existing implementations.
-						</script>
-					</section>
-					<section id="purpose3" data-markdown>
-						<script type="text/template">
-						## Default Methods
-						
-						We have lambdas, but we can`t force **new** behaviours into the current libraries.
-						
-						Solution: **default** methods.
-						
-						</script>
-					</section>
-					<section id="purpose4" data-markdown>
-						<script type="text/template">
-						## Default Methods
-						Default methods or **defender 
-						methods**, can now be added to interfaces providing a default 
-						implementation of the declared behavior.
-						
-						</script>
-					</section>
-					<section id="examples" data-markdown>
-						<script type="text/template">
-						## Examples
-						</script>
-					</section>
-					<section id="examples" data-markdown>
-						<script type="text/template">
-						## Example 1
-						###Basics
-						</script>
-					</section>
-					<section id="example1-1" data-markdown>
-						<script type="text/template">
-						```
-						public interface A {
-		
-							default void foo() {
-								System.out.println("Calling A.foo()");
-							}
-						}
-	
-						public class Clazz implements A {
-						}
-						```
-						</script>
-					</section>
-					<section id="example1-2" data-markdown>
-						<script type="text/template">
-						####Client code
-						```
-						Clazz clazz = new Clazz();
-						clazz.foo();
-						
-						```
-						
-						####Output
-						```
-						"Calling A.foo()"
-						```
-						
-						</script>
-					</section>
-					<section id="examples2" data-markdown>
-						<script type="text/template">
-						## Example 2
-						###Getting messy
-						</script>
-					</section>
-					<section id="example2-1" data-markdown>
-						<script type="text/template">
-						```
-						public interface A {
-	
-							default void foo(){
-								System.out.println("Calling A.foo()");
-							}
-						}
+                    <section id="defaultMethods" data-markdown>
+                        <script type="text/template">
+                            ## Default Methods
 
-						public interface B {
-	
-							default void foo(){
-								System.out.println("Calling B.foo()");
-							}
+                            > Add default behaviours to interfaces
+                        </script>
+                    </section>
+                    <section id="purpose" data-markdown>
+                        <script type="text/template">
+                            ##Why default methods?
 
-						}
-						```
-						```
-						public class Clazz implements A, B {
-						}
-						```
-						
-						
-						Does this code compile?
-						</script>
-					</section>
-					<section id="example2-2" data-markdown>
-						<script type="text/template">
-						
-						```
-						java: class Clazz inherits unrelated defaults for foo() from 
-						types A and B
-						```
-						Of course not!
-						
-						How do we fix it?
-						</script>
-					</section>
-					<section id="example2-3" data-markdown>
-						<script type="text/template">
-							Option A:
-							```
-							public class Clazz implements A, B {
-								public void foo(){}
-							}
-							```
-							We resolve it manually by overriding the conflicting method.
-							
-							Option B:
-							
-							```
-							public class Clazz implements A, B {
-								public void foo(){
-									A.super.foo(); // or B.super.foo()
-								}
-							}
-							```
-							
-							We call the **default** implementation of method `foo()` from either interface **A** or **B** instead of implementing our own.
-						</script>
-					</section>
-					<section id="finalExample1-1" data-markdown>
-						<script type="text/template">
-							Going back to the example of `forEach` method, how can we force it`s default implementation all the iterable collections?
-						</script>
-					</section>
-					<section id="finalExample1-2" data-markdown>
-						<script type="text/template">
-							Let`s take a look at the Java **UML** for all the iterable **Collections**:
-							<img src="Collection_interfaces.gif"></img>
-							
-							In order to add a default behaviour to all the iterable collections, a **default** `forEach` method was added to the `Iterable<E>` **interface**.
-						</script>
-					</section>
-					<section id="finalExample1-3" data-markdown>
-						<script type="text/template">
-							We can find its default implementation in **java.lang.iterable** interface:
-							
-							```
-							@FunctionalInterface
-							public interface Iterable {
-								Iterator iterator();
-								default void forEach(Consumer<? super T> action) {
-									Objects.requireNonNull(action);
-									for (T t : this) {
-										action.accept(t);
-									}
-								}
-							}
-							```
-						</script>
-					</section>
-					<section id="finalExample1-4" data-markdown>
-						<script type="text/template">
-							The forEach method takes **java.util.function.Consumer** functional interface type as a parameter which enables us to pass in a lambda or a method reference as follows:
-							
-							```
-							List<?> list = ...
-							list.forEach(System.out::println);
-							```
-							
-							However, this is also valid for object of class `Set<E>` or `Queue<E>` for example, since both classes implement the `Iterable` interface.
-						</script>
-					</section>
-					<section id="finalExample1-5" data-markdown>
-						<script type="text/template">
-							##Summary
-							Default methods can be seen as a bridge between lambdas and JDK libraries. However, the scope of this feature 
-							surpasses the retrocompatibility domain: they can also help
-							reduce the amount of redudant code when dealing with libraries like **Swing**.
-						</script>
-					</section>
+                            Suppose Java 8 is out and has lambdas. We want to start using
+                            them:
+
+                            ```
+                            List<?> list = ...
+                            list.forEach(...); // lambda code goes here
+                            ```
+
+                        </script>
+                    </section>
+                    <section id="purpose2" data-markdown>
+                        <script type="text/template">
+                            ###<font color='red'>There's a problem</font>
+
+                            The `forEach` method isn’t declared by **java.util.list** nor the **java.util.collection**
+                            interface yet.
+
+                            Adding extra methods to the **java.util.collection** interfaces would break the
+                            existing implementations.
+                        </script>
+                    </section>
+                    <section id="purpose3" data-markdown>
+                        <script type="text/template">
+                        ## Default Methods
+
+                        We have lambdas, but we can't force **new** behaviours into the current libraries.
+
+                        Solution: **default** methods.
+
+                        </script>
+                    </section>
+                    <section id="purpose4" data-markdown>
+                        <script type="text/template">
+                        ## Default Methods
+                        Default methods or **defender
+                        methods**, can now be added to interfaces providing a default
+                        implementation of the declared behavior.
+                        </script>
+                    </section>
+                    <section id="examples" data-markdown>
+                        <script type="text/template">
+                        ## Examples
+                        </script>
+                    </section>
+                    <section id="examples" data-markdown>
+                        <script type="text/template">
+                        ## Example 1
+                        ###Basics
+                        </script>
+                    </section>
+                    <section id="example1-1" data-markdown>
+                        <script type="text/template">
+                        ```
+                        public interface A {
+
+                            default void foo() {
+                                System.out.println("Calling A.foo()");
+                            }
+                        }
+
+                        public class Clazz implements A {
+                        }
+                        ```
+                        </script>
+                    </section>
+                    <section id="example1-2" data-markdown>
+                        <script type="text/template">
+                        ####Client code
+                        ```
+                        Clazz clazz = new Clazz();
+                        clazz.foo();
+
+                        ```
+
+                        ####Output
+                        ```
+                        "Calling A.foo()"
+                        ```
+
+                        </script>
+                    </section>
+                    <section id="examples2" data-markdown>
+                        <script type="text/template">
+                        ## Example 2
+                        ###Getting messy
+                        </script>
+                    </section>
+                    <section id="example2-1" data-markdown>
+                        <script type="text/template">
+                        ```
+                        public interface A {
+
+                            default void foo(){
+                                System.out.println("Calling A.foo()");
+                            }
+                        }
+
+                        public interface B {
+
+                            default void foo(){
+                                System.out.println("Calling B.foo()");
+                            }
+
+                        }
+                        ```
+                        ```
+                        public class Clazz implements A, B {
+                        }
+                        ```
+
+
+                        Does this code compile?
+                        </script>
+                    </section>
+                    <section id="example2-2" data-markdown>
+                        <script type="text/template">
+
+                        ```
+                        java: class Clazz inherits unrelated defaults for foo() from
+                        types A and B
+                        ```
+                        Of course not!
+
+                        How do we fix it?
+                        </script>
+                    </section>
+                    <section id="example2-3" data-markdown>
+                        <script type="text/template">
+                            Option A:
+                            ```
+                            public class Clazz implements A, B {
+                                public void foo(){}
+                            }
+                            ```
+                            We resolve it manually by overriding the conflicting method.
+
+                            Option B:
+
+                            ```
+                            public class Clazz implements A, B {
+                                public void foo(){
+                                    A.super.foo(); // or B.super.foo()
+                                }
+                            }
+                            ```
+
+                            We call the **default** implementation of method `foo()` from either interface **A** or **B** instead of implementing our own.
+                        </script>
+                    </section>
+                    <section id="finalExample1-1" data-markdown>
+                        <script type="text/template">
+                            Going back to the example of `forEach` method, how can we force it's default implementation all the iterable collections?
+                        </script>
+                    </section>
+                    <section id="finalExample1-2" data-markdown>
+                        <script type="text/template">
+                            Let's take a look at the Java **UML** for all the iterable **Collections**:
+                            <img src="Collection_interfaces.gif"></img>
+
+                            In order to add a default behaviour to all the iterable collections, a **default** `forEach` method was added to the `Iterable<E>` **interface**.
+                        </script>
+                    </section>
+                    <section id="finalExample1-3" data-markdown>
+                        <script type="text/template">
+                            We can find its default implementation in **java.lang.iterable** interface:
+
+                            ```
+                            @FunctionalInterface
+                            public interface Iterable {
+                                Iterator iterator();
+                                default void forEach(Consumer<? super T> action) {
+                                    Objects.requireNonNull(action);
+                                    for (T t : this) {
+                                        action.accept(t);
+                                    }
+                                }
+                            }
+                            ```
+                        </script>
+                    </section>
+                    <section id="finalExample1-4" data-markdown>
+                        <script type="text/template">
+                            The forEach method takes **java.util.function.Consumer** functional interface type as a parameter which enables us to pass in a lambda or a method reference as follows:
+
+                            ```
+                            List<?> list = ...
+                            list.forEach(System.out::println);
+                            ```
+
+                            However, this is also valid for object of class `Set<E>` or `Queue<E>` for example, since both classes implement the `Iterable` interface.
+                        </script>
+                    </section>
+                    <section id="finalExample1-5" data-markdown>
+                        <script type="text/template">
+                            ##Summary
+                            Default methods can be seen as a bridge between lambdas and JDK libraries. However, the scope of this feature
+                            surpasses the retrocompatibility domain: they can also help
+                            reduce the amount of redudant code when dealing with libraries like **Swing**.
+                        </script>
+                    </section>
                 </section>
-				<section>
-					<section id="concurrency1" data-markdown>
-                        <script type="text/template">
-						##Accumulators
-						>Scalable updatable variables
-                        </script>
-                    </section>
-					<section id="concurrency2" data-markdown>
-                        <script type="text/template">
-						##Accumulators
-						The continual evolution of uses of concurrency and parallelism in applications requires continual evolution in library support.
-						For this purpose, the **Accumulators** were introduced.
-						
-                        </script>
-                    </section>
-					<section id="concurrency3" data-markdown>
-                        <script type="text/template">
-						##Accumulators
-						Maintaining a single count, sum, etc., that is updated by possibly many threads is a common scalability problem.
-						
-						A set of new classes were created for that purpose:
-						
-						- DoubleAccumulator
-						- DoubleAdder
-						- LongAccumulator
-						- LongAdder
-
-                        </script>
-                    </section>
-					<section id="concurrency4" data-markdown>
-                        <script type="text/template">
-						##Accumulators
-						Package **java.util.concurrent** mechanisms synchronized operations between threads, however if all you want to do 
-						is increment a variable across threads, it was overkill and then some.
-						
-						These classes are usually preferable to alternatives when multiple threads update a common value that is used for purposes such as summary statistics 
-						that are frequently updated but less frequently read.
-                        </script>
-                    </section>
-					<section id="concurrency5" data-markdown>
-                        <script type="text/template">
-						##Accumulators
-						Both the **DoubleAdder** and **LongAdder** classes can be seen as specific subsets of the **DoubleAccumulator** and **LongAccumulator** functionality.
-						
-						The call new `DoubleAdder()` is equivalent to 
-						
-						new `DoubleAccumulator((x, y) -> x + y, 0.0)`.
-						
-						The call new `LongAdder()` is equivalent to 
-						
-						new `LongAccumulator((x, y) -> x + y, 0L)`.
-						</script>
-                    </section>
-					<section id="concurrency5" data-markdown>
-						##Examples
-                    </section>
-					<section id="concurrency5" data-markdown>
-                        <script type="text/template">
-							```
-							DoubleAccumulator da = new DoubleAccumulator((x,y) -> x + y, 0.0);
-							List<Double> doubles = Arrays.asList(1.0, 2.0, 3.0, 4.0, 10.0);
-							doubles.forEach(da::accumulate);
-
-							System.out.println("Result: " + da.doubleValue());
-							
-							```
-							
-							Output:
-							```
-							Result: 24
-							```
-							
-						</script>
-                    </section>
-					<section id="concurrency5" data-markdown>
-                        <script type="text/template">
-							```
-							LongAdder la = new LongAdder();
-							List<long> longs = Arrays.asList(10, 20, 30, 40, 100);
-							longs.forEach(la::accumulate);
-
-							System.out.println("Result: " + la.longValue());
-							
-							```
-							
-							Output:
-							```
-							Result: 200
-							```
-							
-						</script>
-                    </section>
-				</section>
                 <section>
-				<section id="stream" data-markdown>
+                    <section id="concurrency1" data-markdown>
+                        <script type="text/template">
+                        ##Accumulators
+                        >Scalable updatable variables
+                        </script>
+                    </section>
+                    <section id="concurrency2" data-markdown>
+                        <script type="text/template">
+                        ##Accumulators
+                        The continual evolution of uses of concurrency and parallelism in applications requires continual evolution in library support.
+                        For this purpose, the **Accumulators** were introduced.
+
+                        </script>
+                    </section>
+                    <section id="concurrency3" data-markdown>
+                        <script type="text/template">
+                        ##Accumulators
+                        Maintaining a single count, sum, etc., that is updated by possibly many threads is a common scalability problem.
+
+                        A set of new classes were created for that purpose:
+
+                        - DoubleAccumulator
+                        - DoubleAdder
+                        - LongAccumulator
+                        - LongAdder
+
+                        </script>
+                    </section>
+                    <section id="concurrency4" data-markdown>
+                        <script type="text/template">
+                        ##Accumulators
+                        Package **java.util.concurrent** mechanisms synchronized operations between threads, however if all you want to do
+                        is increment a variable across threads, it was overkill and then some.
+
+                        These classes are usually preferable to alternatives when multiple threads update a common value that is used for purposes such as summary statistics
+                        that are frequently updated but less frequently read.
+                        </script>
+                    </section>
+                    <section id="concurrency5" data-markdown>
+                        <script type="text/template">
+                        ##Accumulators
+                        Both the **DoubleAdder** and **LongAdder** classes can be seen as specific subsets of the **DoubleAccumulator** and **LongAccumulator** functionality.
+
+                        The call new `DoubleAdder()` is equivalent to
+
+                        new `DoubleAccumulator((x, y) -> x + y, 0.0)`.
+
+                        The call new `LongAdder()` is equivalent to
+
+                        new `LongAccumulator((x, y) -> x + y, 0L)`.
+                        </script>
+                    </section>
+                    <section id="concurrency5" data-markdown>
+                        ##Examples
+                    </section>
+                    <section id="concurrency5" data-markdown>
+                        <script type="text/template">
+                            ```
+                            DoubleAccumulator da = new DoubleAccumulator((x,y) -> x + y, 0.0);
+                            List<Double> doubles = Arrays.asList(1.0, 2.0, 3.0, 4.0, 10.0);
+                            doubles.forEach(da::accumulate);
+
+                            System.out.println("Result: " + da.doubleValue());
+
+                            ```
+
+                            Output:
+                            ```
+                            Result: 24
+                            ```
+
+                        </script>
+                    </section>
+                    <section id="concurrency5" data-markdown>
+                        <script type="text/template">
+                            ```
+                            LongAdder la = new LongAdder();
+                            List<long> longs = Arrays.asList(10, 20, 30, 40, 100);
+                            longs.forEach(la::accumulate);
+
+                            System.out.println("Result: " + la.longValue());
+
+                            ```
+
+                            Output:
+                            ```
+                            Result: 200
+                            ```
+
+                        </script>
+                    </section>
+                </section>
+                <section>
+                <section id="stream" data-markdown>
                         <script type="text/template">
                             ## java.util.stream
                             > filter/map/reduce for Java
@@ -558,12 +557,12 @@
 
                             - `.filter`    - excludes all elements that don’t match a `Predicate`
                             - `.map`       - perform transformation of elements using a `Function`
-                            - `.flatMap`   - transform each element into zero or more elements by way of another `Stream`  
-                            - `.peek`      - performs some action on each element  
-                            - `.distinct`  - excludes all duplicate elements (`equals()`)  
-                            - `.sorted`    - orderered elements (`Comparator`)  
-                            - `.limit`     - maximum number of elements  
-                            - `.substream` - range (by index) of elements  
+                            - `.flatMap`   - transform each element into zero or more elements by way of another `Stream`
+                            - `.peek`      - performs some action on each element
+                            - `.distinct`  - excludes all duplicate elements (`equals()`)
+                            - `.sorted`    - orderered elements (`Comparator`)
+                            - `.limit`     - maximum number of elements
+                            - `.substream` - range (by index) of elements
 
                             ```
                             List persons = ...;
