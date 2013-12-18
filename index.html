@@ -73,7 +73,37 @@
                             - Return type deduction
                         </script>
                     </section>
-                    <section id="lambdausage" data-markdown data-notes="^Notes:">
+                    <section id="lambdausage1" data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Lambdas
+
+                            ### Examples
+                            
+                            #### Before
+                            ```
+                            JButton btn = new JButton();
+                            final PrintStream pStream = ...;
+                            btn.addActionListener(new ActionListener {
+                                @Override
+                                public void actionPerformed(ActionEvent e) {
+                                    pStream.println("Button Clicked!");
+                                }
+                            });
+                            ```
+                            #### After
+                            ```
+                            JButton btn = new JButton();
+                            final PrintStream pStream = ...;
+                            btn.addActionListener(e -> pStream.println("Button Clicked!"));
+                            ```
+                            Notes:
+                            - Argument type deduction
+                            - In-place implementation.
+                            - Local variable capturing
+                            - Multiple lines lambdas
+                        </script>
+                    </section>
+                    <section id="lambdausage2" data-markdown data-notes="^Notes:">
                         <script type="text/template">
                             ## Lambdas
 
@@ -84,21 +114,11 @@
 
                             ```
                             ```
-                            JButton btn = new JButton();
-                            final PrintStream pStream = ...;
-                            btn.addActionListener(e -> pStream.println("Button Clicked!"));
-                            ```
-                            ```
                             new Thread(() -> {
                                 connectToService();
                                 sendNotification();
                             }).start();
                             ```
-                            Notes:
-                            - Argument type deduction
-                            - In-place implementation.
-                            - Local variable capturing
-                            - Multiple lines lambdas
                         </script>
                     </section>
                 </section>
