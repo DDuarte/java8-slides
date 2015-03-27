@@ -39,6 +39,11 @@
                 </section>
                 <section data-markdown>
                     <script type="text/template">
+                        Demonstration code at: http://github.com/khatchad/java8-demo.
+                    </script>
+                </section>
+                <section data-markdown>
+                    <script type="text/template">
                         ## Some History
                         ![alt text](http://blog.takipi.com/wp-content/uploads/2014/04/Blog_Green-Board.png "Learn Java 8")                        
                         * Java was invented in the 90's as an Object-Oriented language.
@@ -145,7 +150,8 @@
                             ### Examples
                             ```java
                             List<String> strs = ...;
-                            Collections.sort(strs, Integer.compare(s1.length(), s2.length()));
+                            Collections.sort(strs, (s1, s2) -> 
+                                Integer.compare(s1.length(), s2.length()));
                             ```
 
                             ```java
@@ -168,10 +174,10 @@
                         <script type="text/template">
                             ## Functional Interfaces
                             ### Example
-                            ```
+                            ```java
                             @FunctionalInterface
                             public interface Runnable {
-                                public abstract void run();
+                                public void run();
                             }
 
                             Runnable r = () -> System.out.println("Hello World!");
@@ -187,12 +193,12 @@
                     <section id="functionaltemplate" data-markdown data-notes="^Notes:">
                         <script type="text/template">
                             ## java.util.function
-                            - Predicate&lt;T&gt; - a boolean-valued property of an object
-                            - Consumer&lt;T&gt; - an action to be performed on an object
-                            - Function&lt;T, R&gt; - a function transforming a T to a R
-                            - Supplier&lt;T&gt; - provide an instance of a T (such as a factory)
-                            - UnaryOperator&lt;T&gt; - a function from T to T
-                            - BinaryOperator&lt;T&gt; - a function from (T, T) to T
+                            - `Predicate<T>` - a boolean-valued property of an object
+                            - `Consumer<T>` - an action to be performed on an object
+                            - `Function<T,R>` - a function transforming a `T` to a `R`
+                            - `Supplier<T>` - provide an instance of a `T` (such as a factory)
+                            - `UnaryOperator<T>` - a function from `T` to `T`
+                            - `BinaryOperator<T>` - a function from `(T,T)` to `T`
                             Notes:
                             - More meaningful type names
                         </script>
@@ -211,13 +217,13 @@
                         <script type="text/template">
                             ## Method References
                             ### Examples
-                            ```
+                            ```java
                             class Person {
-                                private String _name;
-                                private int _age;
+                                private String name;
+                                private int age;
 
-                                public int getAge() { return _age; }
-                                public String getName() { return _name; }
+                                public int getAge() {return this.age;}
+                                public String getName() {return this.name;}
                             }
 
                             Person[] people = ...;
@@ -232,12 +238,12 @@
                         <script type="text/template">
                             ## Method References
                             ### Kinds of method references
-                            - A static method (ClassName::methName)
-                            - An instance method of a particular object (instanceRef::methName)
-                            - A super method of a particular object (super::methName)
-                            - An instance method of an arbitrary object of a particular type (ClassName::methName)
-                            - A class constructor reference (ClassName::new)
-                            - An array constructor reference (TypeName[]::new)
+                            - A `static` method (`ClassName::methName`)
+                            - An instance method of a particular object (`instanceRef::methName`)
+                            - A `super` method of a particular object (`super::methName`)
+                            - An instance method of an arbitrary object of a particular type (`ClassName::methName`)
+                            - A `class` constructor reference (`ClassName::new`)
+                            - An array constructor reference (`TypeName[]::new`)
                             Notes:
                             - "Instance method of an arbitrary object" adds an argument of that type which becomes the receiver of the invocation
                         </script>
@@ -246,7 +252,7 @@
                         <script type="text/template">
                             ## Method References
                             ### More Examples
-                            ```
+                            ```java
                             Consumer<Integer> b1 = System::exit;
                             Consumer<String[]> b2 = Arrays::sort;
                             Consumer<String> b3 = MyProgram::main;
@@ -267,10 +273,10 @@
                         <script type="text/template">
                             ##Why default methods?
 
-                            Suppose Java 8 is out and has lambdas. We want to start using
+                            Java 8 has lambda expressions. We want to start using
                             them:
 
-                            ```
+                            ```java
                             List<?> list = ...
                             list.forEach(...); // lambda code goes here
                             ```
@@ -281,11 +287,8 @@
                         <script type="text/template">
                             ###<font color='red'>There's a problem</font>
 
-                            The `forEach` method isn’t declared by **java.util.list** nor the **java.util.collection**
-                            interface yet.
-
-                            Adding extra methods to the **java.util.collection** interfaces would break the
-                            existing implementations.
+                            The `forEach` method isn’t declared by **`java.util.List`** nor the **`java.util.Collection`**
+                            interface because doing so would **break** existing implementations.
                         </script>
                     </section>
                     <section id="purpose3" data-markdown>
@@ -294,16 +297,15 @@
 
                         We have lambdas, but we can't force **new** behaviours into the current libraries.
 
-                        Solution: **default** methods.
+                        Solution: **`default`** methods.
 
                         </script>
                     </section>
                     <section id="purpose4" data-markdown>
                         <script type="text/template">
                         ## Default Methods
-                        Default methods or **defender
-                        methods**, can now be added to interfaces providing a default
-                        implementation of the declared behavior.
+                        * Traditionally, interfaces can't have method definitions (just *declarations*).
+                        * Default methods supply default implementations of interface methods.
                         </script>
                     </section>
                     <section id="examples" data-markdown>
@@ -319,7 +321,7 @@
                     </section>
                     <section id="example1-1" data-markdown>
                         <script type="text/template">
-                        ```
+                        ```java
                         public interface A {
 
                             default void foo() {
@@ -335,7 +337,7 @@
                     <section id="example1-2" data-markdown>
                         <script type="text/template">
                         ####Client code
-                        ```
+                        ```java
                         Clazz clazz = new Clazz();
                         clazz.foo();
 
@@ -356,7 +358,7 @@
                     </section>
                     <section id="example2-1" data-markdown>
                         <script type="text/template">
-                        ```
+                        ```java
                         public interface A {
 
                             default void foo(){
@@ -372,7 +374,7 @@
 
                         }
                         ```
-                        ```
+                        ```java
                         public class Clazz implements A, B {
                         }
                         ```
@@ -383,11 +385,9 @@
                     </section>
                     <section id="example2-2" data-markdown>
                         <script type="text/template">
-                        ```
-                        java: class Clazz inherits unrelated defaults for foo() from
-                        types A and B
-                        ```
-                        Of course not!
+                        Of course not (Java is not C++)!
+
+                        > class `Clazz` inherits defaults for foo() from both types `A` and `B`
 
                         How do we fix it?
                         </script>
@@ -395,16 +395,16 @@
                     <section id="example2-3" data-markdown>
                         <script type="text/template">
                             Option A:
-                            ```
+                            ```java
                             public class Clazz implements A, B {
-                                public void foo(){}
+                                public void foo(){/* ... */}
                             }
                             ```
                             We resolve it manually by overriding the conflicting method.
 
                             Option B:
 
-                            ```
+                            ```java
                             public class Clazz implements A, B {
                                 public void foo(){
                                     A.super.foo(); // or B.super.foo()
@@ -412,7 +412,7 @@
                             }
                             ```
 
-                            We call the **default** implementation of method `foo()` from either interface **A** or **B** instead of implementing our own.
+                            We call the **default** implementation of method `foo()` from either interface **`A`** or **`B`** instead of implementing our own.
                         </script>
                     </section>
                     <section id="finalExample1-1" data-markdown>
@@ -422,7 +422,7 @@
                     </section>
                     <section id="finalExample1-2" data-markdown>
                         <script type="text/template">
-                            Let's take a look at the Java **UML** for all the iterable **Collections**:
+                            Let's take a look at the Java **UML** for all the iterable **`Collection`s**:
                             <img src="Collection_interfaces.gif"></img>
 
                             In order to add a default behaviour to all the iterable collections, a **default** `forEach` method was added to the `Iterable<E>` **interface**.
@@ -430,9 +430,9 @@
                     </section>
                     <section id="finalExample1-3" data-markdown>
                         <script type="text/template">
-                            We can find its default implementation in **java.lang.iterable** interface:
+                            We can find its default implementation in **`java.lang.Iterable`** interface:
 
-                            ```
+                            ```java
                             @FunctionalInterface
                             public interface Iterable {
                                 Iterator iterator();
@@ -448,22 +448,24 @@
                     </section>
                     <section id="finalExample1-4" data-markdown>
                         <script type="text/template">
-                            The forEach method takes **java.util.function.Consumer** functional interface type as a parameter which enables us to pass in a lambda or a method reference as follows:
+                            The `forEach` method takes a **`java.util.function.Consumer`** functional interface type as a parameter, which enables us to pass in a lambda or a method reference as follows:
 
-                            ```
+                            ```java
                             List<?> list = ...
                             list.forEach(System.out::println);
                             ```
 
-                            However, this is also valid for object of class `Set<E>` or `Queue<E>` for example, since both classes implement the `Iterable` interface.
+                            This is also valid for `Set`s and `Queue`s, for example, since both classes implement the `Iterable` interface.
                         </script>
                     </section>
                     <section id="finalExample1-5" data-markdown>
                         <script type="text/template">
                             ##Summary
-                            Default methods can be seen as a bridge between lambdas and JDK libraries. However, the scope of this feature
-                            surpasses the retrocompatibility domain: they can also help
-                            reduce the amount of redudant code when dealing with libraries like **Swing**.
+                            * Default methods can be seen as a bridge between lambdas and JDK libraries. 
+                            * Can be used in interfaces to provide default implementations of otherwise abstract methods. 
+                                * Clients can optionally implement (override) them.
+                            * `static` methods are now also allowed in interfaces.
+                                * Can eliminate the need for *utility* classes like [**`Collections`**](http://docs.oracle.com/javase/8/docs/api/java/util/Collections.html).
                         </script>
                     </section>
                 </section>
@@ -489,17 +491,17 @@
 
                         A set of new classes were created for that purpose:
 
-                        - DoubleAccumulator
-                        - DoubleAdder
-                        - LongAccumulator
-                        - LongAdder
+                        - `DoubleAccumulator`
+                        - `DoubleAdder`
+                        - `LongAccumulator`
+                        - `LongAdder`
 
                         </script>
                     </section>
                     <section id="concurrency4" data-markdown>
                         <script type="text/template">
                         ##Accumulators
-                        Package **java.util.concurrent** mechanisms synchronized operations between threads, however if all you want to do
+                        Package **`java.util.concurrent`** mechanisms synchronized operations between threads, however if all you want to do
                         is increment a variable across threads, it was overkill and then some.
 
                         These classes are usually preferable to alternatives when multiple threads update a common value that is used for purposes such as summary statistics
@@ -509,13 +511,13 @@
                     <section id="concurrency5" data-markdown>
                         <script type="text/template">
                         ##Accumulators
-                        Both the **DoubleAdder** and **LongAdder** classes can be seen as specific subsets of the **DoubleAccumulator** and **LongAccumulator** functionality.
+                        Both the **`DoubleAdder`** and **`LongAdder`** classes can be seen as specific subsets of the **`DoubleAccumulator`** and **`LongAccumulator`** functionality.
 
-                        The call new `DoubleAdder()` is equivalent to
+                        The call `new DoubleAdder()` is equivalent to:
 
-                        new `DoubleAccumulator((x, y) -> x + y, 0.0)`.
+                        `new DoubleAccumulator((x, y) -> x + y, 0.0)`.
 
-                        The call new `LongAdder()` is equivalent to
+                        The call `new LongAdder()` is equivalent to:
 
                         new `LongAccumulator((x, y) -> x + y, 0L)`.
                         </script>
@@ -525,7 +527,7 @@
                     </section>
                     <section id="concurrency5" data-markdown>
                         <script type="text/template">
-                            ```
+                            ```java
                             DoubleAccumulator da = new DoubleAccumulator((x,y) -> x + y, 0.0);
                             List<Double> doubles = Arrays.asList(1.0, 2.0, 3.0, 4.0, 10.0);
                             doubles.forEach(da::accumulate);
@@ -536,7 +538,7 @@
 
                             Output:
                             ```
-                            Result: 24
+                            Result: 20
                             ```
 
                         </script>
@@ -545,8 +547,8 @@
                         <script type="text/template">
                             ```
                             LongAdder la = new LongAdder();
-                            List<long> longs = Arrays.asList(10, 20, 30, 40, 100);
-                            longs.forEach(la::accumulate);
+                            List<Long> longs = Arrays.asList(10L, 20L, 30L, 40L, 100L);
+                            longs.forEach(la::add);
 
                             System.out.println("Result: " + la.longValue());
 
@@ -563,16 +565,16 @@
                 <section>
                 <section id="stream" data-markdown>
                         <script type="text/template">
-                            ## java.util.stream
+                            ## `java.util.stream`
                             > filter/map/reduce for Java
                         </script>
                     </section>
                     <section id="stream" data-markdown>
                         <script type="text/template">
-                            ## java.util.stream
+                            ## `java.util.stream`
 
-                            ```
-                            ArrayList<Student> students = …;
+                            ```java
+                            List<Student> students = …;
                             Stream stream = students.stream(); // sequential version
 
                             // parallel version
@@ -586,30 +588,30 @@
                     </section>
                     <section id="streamsources" data-markdown>
                         <script type="text/template">
-                            ## java.util.stream
+                            ## `java.util.stream`
                             ### Stream sources
 
-                            #### collections
-                            ```
-                            LinkedHashSet set;
-                            Stream stream = set.stream();
+                            #### Collections
+                            ```java
+                            Set<Student> set = new LinkedHashSet<>();
+                            Stream<Student> stream = set.stream();
                             ```
 
-                            #### generators
-                            ```
+                            #### Generators
+                            ```java
                             Random random = new Random();
-                            Stream randomNumbers = Stream.generate(random::nextInt);
+                            Stream<Integer> randomNumbers = Stream.generate(random::nextInt);
                             ```
 
-                            #### from other streams
-                            ```
+                            #### From other streams
+                            ```java
                             Stream newStream = Stream.concat(stream, randomNumbers);
                             ```
                         </script>
                     </section>
                     <section id="intermediateoperations" data-markdown>
                         <script type="text/template">
-                            ## java.util.stream
+                            ## `java.util.stream`
                             ### Intermediate operations
 
                             - `.filter`    - excludes all elements that don’t match a `Predicate`
@@ -621,17 +623,19 @@
                             - `.limit`     - maximum number of elements
                             - `.substream` - range (by index) of elements
 
-                            ```
-                            List persons = ...;
-                            Stream tenPersonsOver18 = persons.stream()
+                            ```java
+                            List<Person> persons = ...;
+                            Stream<Person> tenPersonsOver18 = persons.stream()
                            .filter(p -> p.getAge() > 18)
                            .limit(10);
                             ```
+
+                            More examples at: https://github.com/cst2301-pt13/library-solution.
                         </script>
                     </section>
                     <section id="terminatingoperations" data-markdown>
                         <script type="text/template">
-                            ## java.util.stream
+                            ## `java.util.stream`
                             ### Terminating operations
 
                             1. Obtain a stream from some sources
@@ -645,7 +649,7 @@
                             - `forEach`
                             - iterators
 
-                            ```
+                            ```java
                             List<Person> persons = ..;
                             List<Student> students = persons.stream()
                            .filter(p -> p.getAge() > 18)
@@ -656,10 +660,10 @@
                     </section>
                     <section id="parallelsequential" data-markdown>
                         <script type="text/template">
-                            ## java.util.stream
-                            ### Parallel & sequential
+                            ## `java.util.stream`
+                            ### Parallel & Sequential
 
-                            ```
+                            ```java
                             List<Person> persons = ..;
                             List<Student> students = persons.stream()
          .parallel()
@@ -683,11 +687,11 @@
                     <section id="java_time_clock" data-markdown data-notes="^Notes:">
                         <script type="text/template">
                             ## java.time
-                            ### Current Time
-                            ```
+                            ### [Current Time](http://docs.oracle.com/javase/8/docs/api/java/time/Clock.html)
+                            ```java
                             Clock clockUTC = Clock.systemUTC();
                             ```
-                            ```
+                            ```java
                             Clock clockDefault = Clock.systemDefaultZone();
                             ```
                             Notes:
@@ -699,10 +703,10 @@
                         <script type="text/template">
                             ## java.time
                             ### Time Zones
-                            ```
+                            ```java
                             ZoneId zone = ZoneId.systemDefault();
                             ```
-                            ```
+                            ```java
                             ZoneId zoneBerlin = ZoneId.of("Europe/Berlin");
                             Clock clock = Clock.system(zoneBerlin);
                             ```
@@ -715,7 +719,7 @@
                         <script type="text/template">
                             ## java.time
                             ### Human Readable Time
-                            ```
+                            ```java
                             class LocalDate {
                                 public static LocalDate now() { ... }
                                 public static LocalDate now(ZoneId zone) { ... }
@@ -723,13 +727,13 @@
                             }
 
                             ```
-                            ```
+                            ```java
                             LocalDate date = LocalDate.now();
                             System.out.printf("%s-%s-%s",
                                 date.getYear(), date.getMonthValue(), date.getDayOfMonth());
                             ```
                             Notes:
-                            - now() accepts a Clock or a ZoneId
+                            - `now()` accepts a Clock or a ZoneId
                         </script>
                     </section>
 
@@ -737,7 +741,7 @@
                         <script type="text/template">
                             ## java.time
                             ### Doing Calculations
-                            ```
+                            ```java
                             LocalTime lt = LocalTime.now();
                             lt.plus(5, ChronoUnit.HOURS);
 
@@ -762,7 +766,7 @@
                 </section>
                 <section data-markdown>
                     <script type="text/template">
-                        # THE END
+                        # Questions?
                     </script>
                 </section>
             </div>
