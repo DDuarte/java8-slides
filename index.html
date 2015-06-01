@@ -608,6 +608,8 @@
                             ```java
                             Random random = new Random();
                             Stream<Integer> randomNumbers = Stream.generate(random::nextInt);
+                            // or simply ...
+                            IntStream moreRandomNumbers = random.ints();
                             ```
 
                             #### From other streams
