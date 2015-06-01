@@ -183,12 +183,13 @@
 
                             Runnable r = () -> System.out.println("Hello World!");
                             ```
+                            - `@FunctionalInterface`: <!-- .element: class="fragment" -->
+                                - May be omitted. <!-- .element: class="fragment" -->
+                                - Generates an error when there is more than one abstract method. <!-- .element: class="fragment" --> 
+                            - Can store a lambda expression in a variable. <!-- .element: class="fragment" -->
+                            - Can return a lambda expression. <!-- .element: class="fragment" -->
                             Notes:
-                            - @FunctionalInterface
-                                - May be omitted
-                                - Generates error when there is more than one abstract method
-                            - Attributing a lambda expression to a variable
-                            - Returning a lambda expression is also possible
+                            - An instance of the functional interface is stored in `r`.
                         </script>
                     </section>
                     <section id="functionaltemplate3" data-markdown data-notes="^Notes:">
