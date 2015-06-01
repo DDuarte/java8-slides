@@ -465,11 +465,12 @@
                     <section id="finalExample1-5" data-markdown>
                         <script type="text/template">
                             ##Summary
-                            * Default methods can be seen as a bridge between lambdas and JDK libraries. 
-                            * Can be used in interfaces to provide default implementations of otherwise abstract methods. 
-                                * Clients can optionally implement (override) them.
-                            * `static` methods are now also allowed in interfaces.
-                                * Can eliminate the need for *utility* classes like [**`Collections`**](http://docs.oracle.com/javase/8/docs/api/java/util/Collections.html).
+                            * Default methods can be seen as a bridge between lambdas and JDK libraries.
+                            * Can be used in interfaces to provide default implementations of otherwise abstract methods.
+                                * Clients can optionally implement (override) them. 
+                                * Can eliminate the need for *skeletal implementators* like [**`AbstractCollection`**](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractCollection.html). 
+                            * `static` methods are now also allowed in interfaces. 
+                                * Can eliminate the need for *utility* classes like [**`Collections`**](http://docs.oracle.com/javase/8/docs/api/java/util/Collections.html). 
                         </script>
                     </section>
                 </section>
