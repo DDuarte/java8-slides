@@ -673,11 +673,11 @@
                             ```java
                             List<Person> persons = ..;
                             List<Student> students = persons.stream()
-         .parallel()
-         .filter(p -> p.getAge() > 18)
-         .sequential()
-         .map(Student::new)
-         .collect(Collectors.toCollection(ArrayList::new));
+                                 .parallel()
+                                 .filter(p -> p.getAge() > 18)
+                                 .sequential()
+                                 .map(Student::new)
+                                 .collect(Collectors.toCollection(ArrayList::new));
                             ```
                         </script>
                     </section>
