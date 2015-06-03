@@ -469,8 +469,243 @@
                             * Can be used in interfaces to provide default implementations of otherwise abstract methods.
                                 * Clients can optionally implement (override) them. 
                                 * Can eliminate the need for *skeletal implementators* like [**`AbstractCollection`**](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractCollection.html). 
-                            * `static` methods are now also allowed in interfaces. 
                                 * Can eliminate the need for *utility* classes like [**`Collections`**](http://docs.oracle.com/javase/8/docs/api/java/util/Collections.html). 
+                            * `static` methods are now also allowed in interfaces. 
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Open Problems
+                            * Can eliminate the need for *skeletal implementators* like [**`AbstractCollection`**](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractCollection.html). 
+                                > ### Can we automate this?  <!-- .element: class="fragment" -->
+                                > 1. How do we determine if an interface implementor is "skeletal?" <!-- .element: class="fragment" -->
+                                > 1. What is the criteria for an abstract method to be converted to a default method? <!-- .element: class="fragment" -->
+                                > 1. What if there is a hierarchy of skeletal implementors, e.g., AbstractCollection, AbstractList? <!-- .element: class="fragment" -->
+                                > 1. How do we preserve semantics? <!-- .element: class="fragment" -->
+                                > 1. What client changes are necessary? <!-- .element: class="fragment" -->
+                            Notes:
+                            - These bullets are from the previous slide.
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Skeletal Implementators
+                            > Abstract classes that provide skeletal implementations for interfaces.
+
+                            Let's take a look at the Java **UML** for **`AbstractCollection`**:
+                            ![AbstractCollection UML](AbstractCollection.jpeg "AbstractCollection UML")
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Open Problems
+                            * Can eliminate the need for *utility* classes like [**`Collections`**](http://docs.oracle.com/javase/8/docs/api/java/util/Collections.html). 
+                                > ### Can we automate this? <!-- .element: class="fragment" -->
+                                > 1. How do we determine if a class is a "utility" class? <!-- .element: class="fragment" -->
+                                > 1. What is the criteria for a static method to be: <!-- .element: class="fragment" -->
+                                    - Converted to an instance method? <!-- .element: class="fragment" -->
+                                    - Moved to an interface? <!-- .element: class="fragment" -->
+                                > 1. How do we preserve semantics? <!-- .element: class="fragment" -->
+                                > 1. What client changes are necessary? <!-- .element: class="fragment" -->
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            Let's start with question #2 for both the previous slides. There seems to be a few cases here:
+
+                            ---
+                            **#**  | **From a class**  | **To an interface**
+                            ------ | ------------------| --------------------:
+                            1.     | `abstract` method | `default` method 
+                            2.     | `instance` method | `default` method 
+                            3.     | `static` method   | `default` method 
+                            4.     | `static` method   | `static` method 
+                            ---
+
+                            > - Can you see any difference between cases #1 and #2? <!-- .element: class="fragment" -->
+                            > - Is case #4 a simple move method refactoring? (Yes but to where? -- more later) <!-- .element: class="fragment" -->
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Why Is This Complicated? 
+
+                            Case #1 corresponds to moving a skeletal implementation to an interface.
+
+                            ---
+                            **#**  | **From a class**  | **To an interface** 
+                            ------ | ----------------- | --------------------:
+                            1.     | `abstract` method | `default` method 
+                            ---  
+                              
+                            For case #1, can we not simply use a move method refactoring?  <!-- .element: class="fragment" -->
+
+                            > No. The inherent problem is that, unlike classes, interfaces may extend multiple interfaces. As such, we now have a kind of multiple inheritance problem to deal with. <!-- .element: class="fragment" -->
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Case #1
+                            ### Some (perhaps) Obvious Preconditions
+                            - Source `abstract` method must not access any instance fields.
+                                - Interfaces may not have instance fields.
+                            - Can't currently have a `default` method in the target interface with the same signature.
+                            - Can't modify target method's visibility.
+
+                            ### Some Obvious Tasks 
+                            - Must replace the target method in the `interface` (add a body to it).
+                            - Must add the `default` keyword.
+                            - Must remove any `@Override` annotations (it's top-level now).
+                            - If nothing left in `abstract` class, remove it?
+                            - Need to deal with documentation.
+
+                            Notes:
+                            - If it was protected before, can't make it public.
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Case #1
+                            ### Some Not-so-obvious Preconditions
+
+                            Suppose we have the following situation:
+
+                            ```java
+                            interface I {
+                                void m();
+                            }
+
+                            interface J {
+                                void m();
+                            }
+
+                            abstract class A implements I, J {
+                                @Override
+                                void m() {...}
+                            }
+                            ```
+
+                            Here, `A` provides a partial implementation of `I.m()`, which also happens to be declared as part of interface `J`.
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Case #1
+                            ### Some Not-so-obvious Preconditions
+
+                            Now, we pull up `A.m()` to be a default method of `I`:
+
+                            ```java
+                            interface I { 
+                                default void m() {..} //was void m();
+                            }
+
+                            interface J { 
+                                void m(); //stays the same.
+                            }
+
+                            abstract class A implements I, J {
+                                //now empty, was: void m() {...}
+                            }
+                            ```
+
+                            - We now have a compile-time error in `A` because `A` needs to declare which `m()` it inherits.
+                            - In general, inheritance hierarchies may be large and complicated.
+                            - Other preconditions may also exist (work in progress).
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Why Is This Complicated? 
+
+                            Case #3 corresponds to moving a static utility method to an interface.
+
+                            ---
+                            **#**  | **From a class**  | **To an interface** 
+                            ------ | ----------------- | --------------------:
+                            3.     | `static` method   | `default` method 
+                            ---  
+                              
+                            For case #1, can we not simply use a move method refactoring?  <!-- .element: class="fragment" -->
+
+                            No and for a few reasons: <!-- .element: class="fragment" -->
+                            > - Method signature must change (not only removing the static keyword). <!-- .element: class="fragment" -->
+                            > - Client code must change from static method calls to instance method calls. <!-- .element: class="fragment" -->
+                            > - Which parameter is to be the receiver of the call? <!-- .element: class="fragment" -->
+                            > - What is the target interface? <!-- .element: class="fragment" -->
+
+                            Notes:
+                            - Default methods are a kind of instance method.
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Case #3
+                            ### Some (perhaps) Obvious Preconditions
+                            - The source method vaciously doesn't access instance fields.
+                            - Default version of the source method can't already exist in the target interface.
+
+                            ### Some Obvious Tasks 
+                            - Must add the `default` keyword.
+                            - If nothing left in utility class, remove it?
+                            - Need to deal with documentation.
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Case #3
+                            ### Some Not-so-obvious Preconditions
+                            ```java
+                            /**
+                             * Copies all of the elements from one list into another.
+                             */
+                            public static <T> void Collections.copy(List<? super T> dest, List<? extends T> src);
+                            ```
+                            - Should this be a `static` or `default` method?
+                                - Call it as `Collections.copy(l2, l1)` or `l2.copy(l1)`?
+                                    - It's probably more natural to leave it as `static` .
+                                    - Also, we can't express the generics if it was refactored to a `default` method.
+                                        - The generics here express the relationship between the two lists in a single method. 
+                                        - We can't do if it was `default`.
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Case #3
+                            - This method should actually move to the `List` interface and remain `static`, but:
+                                - What is there's another method named `copy` in the `List` interface? 
+                                - `List` is an interface, and interfaces can extend other interfaces. 
+                                    - What if there's another method with the same signature in the hierarchy? 
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Case #3
+                            You may be tempted to move the `copy` method to a `default` method in `List`, but since the method uses generics and expresses a very distinct relationship between two two `List`s,  you will lose the type safety offered by the generics. For example, suppose you have:
+
+                                List<String> l1;
+                                List<String> l2;
+
+                            Now, you copy the contents of `l2` into `l1`:
+                                
+                                Collections.copy(l1, l2);
+
+                            If `l2` is, instead, `List<Integer>`, you will receive a compile-time error. However, if `copy` was a default method of, say, the `List` interface, we would have something like this:
+
+                                l1.copy(l2)
+
+                            Making `l2` a `List<Integer>` would not result in a compile-time error.
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Case #4
+                            ### Determining the target interface for case #4
+                            We can apply a heuristic: take the least common interface of the parameters. For example:
+                            ```java
+                            public static void m(I1 p1, I2 p2, ..., In pn);
+                            ```
+                            Here, we would take the closest sibling to `I1`, `I2`, ..., `In` as the target interface. Otherwise, we normally take the first parameter if it's an interface.
                         </script>
                     </section>
                 </section>
