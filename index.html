@@ -30,11 +30,12 @@
                         New York City College of Technology  
                         City University of New York
 
-                        Programming Research Group  
-                        Mathematical and Computing Sciences  
-                        Tokyo Institute of Technology
+                        Core Software Group  
+                        Dept. of Creative Informatics  
+                        Graduate School of Information Science and Technology  
+                        The University of Tokyo
 
-                        June 2, 2015
+                        June 8, 2015
 
                         Based on slides by *Duarte Duarte*, *Eduardo Martins*, *Miguel Marques* and *Ruben Cordeiro*
                         and Horstmann, Cay S. (2014-01-10). Java SE8 for the Really Impatient: A Short Course on the Basics (Java Series). Pearson Education. 
@@ -481,7 +482,7 @@
                             * Can eliminate the need for *skeletal implementators* like [**`AbstractCollection`**](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractCollection.html). 
                                 > ### Can we automate this?  <!-- .element: class="fragment" -->
                                 > 1. How do we determine if an interface implementor is "skeletal?" <!-- .element: class="fragment" -->
-                                > 1. What is the criteria for an abstract method to be converted to a default method? <!-- .element: class="fragment" -->
+                                > 1. What is the criteria for an instance method to be converted to a default method? <!-- .element: class="fragment" -->
                                 > 1. What if there is a hierarchy of skeletal implementors, e.g., AbstractCollection, AbstractList? <!-- .element: class="fragment" -->
                                 > 1. How do we preserve semantics? <!-- .element: class="fragment" -->
                                 > 1. What client changes are necessary? <!-- .element: class="fragment" -->
@@ -518,14 +519,12 @@
                             ---
                             **#**  | **From a class**  | **To an interface**
                             ------ | ------------------| --------------------:
-                            1.     | `abstract` method | `default` method 
-                            2.     | `instance` method | `default` method 
-                            3.     | `static` method   | `default` method 
-                            4.     | `static` method   | `static` method 
+                            1.     | `instance` method | `default` method 
+                            2.     | `static` method   | `default` method 
+                            3.     | `static` method   | `static` method 
                             ---
 
-                            > - Can you see any difference between cases #1 and #2? <!-- .element: class="fragment" -->
-                            > - Is case #4 a simple move method refactoring? (Yes but to where? -- more later) <!-- .element: class="fragment" -->
+                            > - Is case #3 a simple move method refactoring? (Yes but to where? -- more later) <!-- .element: class="fragment" -->
                         </script>
                     </section>
                     <section data-markdown data-notes="^Notes:">
@@ -537,7 +536,7 @@
                             ---
                             **#**  | **From a class**  | **To an interface** 
                             ------ | ----------------- | --------------------:
-                            1.     | `abstract` method | `default` method 
+                            1.     | `instance` method | `default` method 
                             ---  
                               
                             For case #1, can we not simply use a move method refactoring?  <!-- .element: class="fragment" -->
@@ -549,7 +548,7 @@
                         <script type="text/template">
                             ## Case #1
                             ### Some (perhaps) Obvious Preconditions
-                            - Source `abstract` method must not access any instance fields.
+                            - Source `instance` method must not access any instance fields.
                                 - Interfaces may not have instance fields.
                             - Can't currently have a `default` method in the target interface with the same signature.
                             - Can't modify target method's visibility.
