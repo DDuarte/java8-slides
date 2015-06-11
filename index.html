@@ -24,18 +24,18 @@
             <div class="slides">
                 <section data-markdown>
                     <script type="text/template">
-                        ## Open Problems in Automatically Refactoring Legacy Java Software to use New Features in Java 8
+                        ## Automatic Migration of Legacy Java Method Implementations to Interfaces
+                        ### A Work in Progress
                         *Raffi Khatchadourian*  
                         Computer Systems Technology  
                         New York City College of Technology  
                         City University of New York
 
-                        Core Software Group  
-                        Dept. of Creative Informatics  
-                        Graduate School of Information Science and Technology  
-                        The University of Tokyo
+                        Department of Computer Science  
+                        College of Staten Island   
+                        City University of New York
 
-                        June 8, 2015
+                        June 12, 2015
 
                         Based on slides by *Duarte Duarte*, *Eduardo Martins*, *Miguel Marques* and *Ruben Cordeiro*
                         and Horstmann, Cay S. (2014-01-10). Java SE8 for the Really Impatient: A Short Course on the Basics (Java Series). Pearson Education. 
@@ -43,7 +43,7 @@
                 </section>
                 <section data-markdown>
                     <script type="text/template">
-                        Demonstration code at: http://github.com/khatchad/java8-demo.
+                        Some demonstration code at: http://github.com/khatchad/java8-demo.
                     </script>
                 </section>
                 <section data-markdown>
@@ -672,15 +672,6 @@
                     <section data-markdown data-notes="^Notes:">
                         <script type="text/template">
                             ## Case #3
-                            - This method should actually move to the `List` interface and remain `static`, but:
-                                - What is there's another method named `copy` in the `List` interface? 
-                                - `List` is an interface, and interfaces can extend other interfaces. 
-                                    - What if there's another method with the same signature in the hierarchy? 
-                        </script>
-                    </section>
-                    <section data-markdown data-notes="^Notes:">
-                        <script type="text/template">
-                            ## Case #3
                             You may be tempted to move the `copy` method to a `default` method in `List`, but since the method uses generics and expresses a very distinct relationship between two two `List`s,  you will lose the type safety offered by the generics. For example, suppose you have:
 
                                 List<String> l1;
@@ -695,6 +686,15 @@
                                 l1.copy(l2)
 
                             Making `l2` a `List<Integer>` would not result in a compile-time error.
+                        </script>
+                    </section>
+                    <section data-markdown data-notes="^Notes:">
+                        <script type="text/template">
+                            ## Case #3
+                            - This method should actually move to the `List` interface and remain `static`, but:
+                                - What is there's another method named `copy` in the `List` interface? 
+                                - `List` is an interface, and interfaces can extend other interfaces. 
+                                    - What if there's another method with the same signature in the hierarchy? 
                         </script>
                     </section>
                     <section data-markdown data-notes="^Notes:">
