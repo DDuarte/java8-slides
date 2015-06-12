@@ -479,63 +479,6 @@
                         <script type="text/template">
                             ## Open Problems
                             * Can eliminate the need for *skeletal implementators* like [**`AbstractCollection`**](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractCollection.html). 
-                        </script>
-                    </section>
-                    <section data-markdown data-notes="^Notes:">
-                        <script type="text/template">
-                            ## Motivation
-
-                            Two cases:
-
-                            1. *Complete* migration of skeletal implementation to interface.
-                                - Makes type hierarchy less complicated.<!-- .element: class="fragment" -->
-                                    - One less type.<!-- .element: class="fragment" -->
-                                - Makes interfaces easier to implement.<!-- .element: class="fragment" -->
-                                    - No *global* analysis required to find skeletal implemention.<!-- .element: class="fragment" -->
-                                - Makes interfaces easier to maintain.<!-- .element: class="fragment" -->
-                                    - No simultaneous modifications between interface and skeletal implementation required.<!-- .element: class="fragment" -->
-                            1. *Partial* migration of skeletal implementation to interface.
-                                - Possibly makes interfaces easier to implement.<!-- .element: class="fragment" --> 
-                                    - All implementations may not need to extended the skeletal implementation.<!-- .element: class="fragment" -->
-                                - Possibly makes interfaces easier to maintain.<!-- .element: class="fragment" -->
-                                    - Possibily less simultaneous modifications between interface and skeletal implementation required.<!-- .element: class="fragment" --> 
-                                    
-                            Notes:
-                            - Could be constraints that don't allow us to eleminate the skeletal implementation completely.
-                            - Partially means only some of the methods.
-                            - Depends on how much of interface was moved and how much implementation implemented their own stuff.
-                        </script>
-                    </section>
-                    <section data-markdown data-notes="^Notes:">
-                        <script type="text/template">
-                            ## Open Problems
-                            * Can eliminate the need for *utility* classes like [**`Collections`**](http://docs.oracle.com/javase/8/docs/api/java/util/Collections.html). 
-                        </script>
-                    </section>
-                    <section data-markdown data-notes="^Notes:">
-                        <script type="text/template">
-                            ## Motivation
-
-                            Two cases:
-
-                            1. *Complete* migration of utility classes to interface(s).
-                                - Makes type hierarchy less complicated.<!-- .element: class="fragment" -->
-                                    - One less type.<!-- .element: class="fragment" -->
-                                - Makes interfaces easier to use.<!-- .element: class="fragment" -->
-                                    - No *global* analysis required to find utility class.<!-- .element: class="fragment" -->
-                                    - Only methods applicable to the interface are present.<!-- .element: class="fragment" -->
-                                    - Can call methods like instance methods (a.b() instead of b(a)).<!-- .element: class="fragment" -->
-                                    - IDE will show applicable methods.<!-- .element: class="fragment" -->
-                            1. *Partial* migration of utility classes to interface(s).
-                                - Still makes interfaces easier to use for certain methods.<!-- .element: class="fragment" -->
-                                - Can avoid global analysis in some cases. <!-- .element: class="fragment" -->
-                            Notes:
-                        </script>
-                    </section>
-                    <section data-markdown data-notes="^Notes:">
-                        <script type="text/template">
-                            ## Open Problems
-                            * Can eliminate the need for *skeletal implementators* like [**`AbstractCollection`**](https://docs.oracle.com/javase/8/docs/api/java/util/AbstractCollection.html). 
                                 > ### Can we automate this?  <!-- .element: class="fragment" -->
                                 > 1. How do we determine if an interface implementor is "skeletal?" <!-- .element: class="fragment" -->
                                 > 1. What is the criteria for an instance method to be converted to a default method? <!-- .element: class="fragment" -->
