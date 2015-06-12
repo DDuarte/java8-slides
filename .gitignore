@@ -6,3 +6,5 @@ node_modules/
 .sass-cache
 *.swp
 *.swo
+css/reveal.min.css
+js/reveal.min.js
